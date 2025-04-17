@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>วันฉัตรมงคลมหาวังวน</title>
+    <style>
+        body {
+            font-family: 'TH Sarabun New', sans-serif;
+            background: linear-gradient(45deg, #FFD700, #B8860B);
+            text-align: center;
+        }
+        
+        #maze-container {
+            position: relative;
+            width: 800px;
+            height: 200px;
+            margin: 50px auto;
+        }
+        
+        .door {
+            width: 70px;
+            height: 70px;
+            background: #8B4513;
+            display: inline-block;
+            margin: 10px;
+            line-height: 70px;
+            color: gold;
+            font-size: 24px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .question {
+            display: none;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            width: 600px;
+            margin: 20px auto;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        
+        .option {
+            padding: 10px;
+            margin: 5px;
+            background: #F0E68C;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background: #FFD700;
+            transform: scale(1.05);
+        }
+        
+        #result-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 215, 0, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 50px gold;
+        }
+    </style>
+</head>
+<body>
+    <h1>เกมเขาวงกตวันฉัตรมงคล👑</h1>
+    
+    <div id="maze-container">
+        <div class="door" id="door1">1</div>
+        <div class="door" id="door2">2</div>
+        <div class="door" id="door3">3</div>
+        <div class="door" id="door4">4</div>
+        <div class="door" id="door5">5</div>
+        <div class="door" id="door6">6</div>
+        <div class="door" id="door7">7</div>
+        <div class="door" id="door8">8</div>
+        <div class="door" id="door9">9</div>
+        <div class="door" id="door10">10</div>
+    </div>
+
+    <!-- คำถาม -->
+    <div class="question" id="q1">
+        <h3>1. วันฉัตรมงคล ตรงกับวันที่เท่าไรของทุกปี?</h3>
+        <div class="option" onclick="checkAnswer(1, this, '4 พฤษภาคม')">4 พฤษภาคม</div>
+        <div class="option" onclick="checkAnswer(1, this)">5 พฤษภาคม</div>
+        <div class="option" onclick="checkAnswer(1, this)">6 พฤษภาคม</div>
+        <div class="option" onclick="checkAnswer(1, this)">5 ธันวาคม</div>
+    </div>
+
+    <!-- เพิ่มคำถาม 2-10 ในรูปแบบเดียวกัน -->
+
+    <div id="result-popup">
+        <h2>🏆 ผลลัพธ์ 🏆</h2>
+        <p id="score-text"></p>
+        <button onclick="location.reload()">เล่นอีกครั้ง</button>
+    </div>
+
+    <script>
+        let currentDoor = 1;
+        let score = 0;
+
+        function checkAnswer(qNum, element, correctAns) {
+            const questionDiv = document.getElementById(`q${qNum}`);
+            
+            if(element.innerText === correctAns) {
+                score++;
+                element.style.background = '#90EE90';
+                setTimeout(() => {
+                    questionDiv.style.display = 'none';
+                    moveToNextDoor();
+                }, 1000);
+            } else {
+                element.style.background = '#FF6347';
+                setTimeout(() => {
+                    questionDiv.style.display = 'none';
+                    moveToNextDoor();
+                }, 1000);
+            }
+        }
+
+        function moveToNextDoor() {
+            document.getElementById(`door${currentDoor}`).style.background = '#32CD32';
+            currentDoor++;
+            
+            if(currentDoor <= 10) {
+                document.getElementById(`q${currentDoor}`).style.display = 'block';
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            const popup = document.getElementById('result-popup');
+            popup.style.display = 'block';
+            document.getElementById('score-text').innerText = 
+                `คุณตอบถูก ${score} ข้อจาก 10 ข้อ! 🎉`;
+        }
+
+        // เริ่มเกม
+        document.getElementById('q1').style.display = 'block';
+    </script>
+</body>
+</html>
